@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../common/color_extension.dart';
 import '../../common_widget/icon_item_row.dart';
 
@@ -11,226 +10,217 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  bool isActive = false;
+  bool isReminderEnabled = false;
+  bool isDarkMode = true; // Variable untuk menyimpan status Dark Mode
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.sizeOf(context);
+    // Tentukan warna berdasarkan status Dark Mode
+    var backgroundColor = isDarkMode ? TColor.gray : Colors.white;
+    var textColor = isDarkMode ? TColor.white : TColor.gray;
+    var subTextColor = isDarkMode ? TColor.gray30 : TColor.gray50;
+    var containerColor = isDarkMode
+        ? TColor.gray60.withOpacity(0.2)
+        : TColor.gray10.withOpacity(0.1);
+
     return Scaffold(
-      backgroundColor: TColor.gray,
+      backgroundColor: backgroundColor, // Background berubah dinamis
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Column(children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                // Tombol Back (IconButton) SUDAH DIHAPUS
-
-                // Judul Halaman
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Pengaturan", // Diubah menjadi "Pengaturan"
-                      style: TextStyle(color: TColor.gray30, fontSize: 16),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/img/u1.png",
-                  width: 70,
-                  height: 70,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Code For Any",
-                  style: TextStyle(
-                      color: TColor.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "codeforany@gmail.com",
-                  style: TextStyle(
-                      color: TColor.gray30,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            InkWell(
-              borderRadius: BorderRadius.circular(15),
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: TColor.border.withOpacity(0.15),
-                  ),
-                  color: TColor.gray60.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  "Edit profile", // Bisa diubah jadi "Edit Profil" jika mau
-                  style: TextStyle(
-                      color: TColor.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            children: [
+              // --- HEADER (JUDUL) ---
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15, bottom: 8),
-                    child: Text(
-                      "General",
-                      style: TextStyle(
-                          color: TColor.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: TColor.border.withOpacity(0.1),
-                      ),
-                      color: TColor.gray60.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        IconItemRow(
-                          title: "Security",
-                          icon: "assets/img/face_id.png",
-                          value: "FaceID",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Text(
+                          "Pengaturan",
+                          style: TextStyle(
+                              color: subTextColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
                         ),
-                        IconItemSwitchRow(
-                          title: "iCloud Sync",
-                          icon: "assets/img/icloud.png",
-                          value: isActive,
-                          didChange: (newVal) {
-                            setState(() {
-                              isActive = newVal;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 8),
-                    child: Text(
-                      "My subscription",
-                      style: TextStyle(
-                          color: TColor.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: TColor.border.withOpacity(0.1),
-                      ),
-                      color: TColor.gray60.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        IconItemRow(
-                          title: "Sorting",
-                          icon: "assets/img/sorting.png",
-                          value: "Date",
-                        ),
-                        IconItemRow(
-                          title: "Summary",
-                          icon: "assets/img/chart.png",
-                          value: "Average",
-                        ),
-                        IconItemRow(
-                          title: "Default currency",
-                          icon: "assets/img/money.png",
-                          value: "USD (\$)",
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 8),
-                    child: Text(
-                      "Appearance",
-                      style: TextStyle(
-                          color: TColor.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: TColor.border.withOpacity(0.1),
-                      ),
-                      color: TColor.gray60.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        IconItemRow(
-                          title: "App icon",
-                          icon: "assets/img/app_icon.png",
-                          value: "Default",
-                        ),
-                        IconItemRow(
-                          title: "Theme",
-                          icon: "assets/img/light_theme.png",
-                          value: "Dark",
-                        ),
-                        IconItemRow(
-                          title: "Font",
-                          icon: "assets/img/font.png",
-                          value: "Inter",
-                        ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ],
               ),
-            )
-          ]),
+
+              // --- MENU PENGATURAN ---
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SECTION 1: PREFERENSI
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: Text(
+                        "Preferensi",
+                        style: TextStyle(
+                            color: textColor, // Warna teks berubah dinamis
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: TColor.border.withOpacity(0.1),
+                        ),
+                        color: containerColor, // Warna kotak berubah dinamis
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          IconItemRow(
+                            title: "Awal Siklus Bulan",
+                            icon: "assets/img/calendar.png",
+                            value: "Tanggal 1",
+                          ),
+                          IconItemSwitchRow(
+                            title: "Pengingat Harian",
+                            icon: "assets/img/app_icon.png",
+                            value: isReminderEnabled,
+                            didChange: (newVal) {
+                              setState(() {
+                                isReminderEnabled = newVal;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // SECTION 2: DATA & LAPORAN
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 8),
+                      child: Text(
+                        "Data & Laporan",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: TColor.border.withOpacity(0.1),
+                        ),
+                        color: containerColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "Fitur Export CSV akan segera hadir")));
+                            },
+                            child: const IconItemRow(
+                              title: "Export ke Excel/CSV",
+                              icon: "assets/img/chart.png",
+                              value: "Unduh",
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor: isDarkMode
+                                          ? TColor.gray
+                                          : Colors.white,
+                                      title: Text("Hapus Data?",
+                                          style: TextStyle(color: textColor)),
+                                      content: const Text(
+                                          "Semua data transaksi akan hilang permanen.",
+                                          style: TextStyle(color: Colors.grey)),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text("Batal")),
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text("Hapus",
+                                                style: TextStyle(
+                                                    color: Colors.red))),
+                                      ],
+                                    );
+                                  });
+                            },
+                            child: const IconItemRow(
+                              title: "Hapus Semua Data",
+                              icon: "assets/img/face_id.png",
+                              value: "Reset",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // SECTION 3: LAINNYA
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 8),
+                      child: Text(
+                        "Lainnya",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: TColor.border.withOpacity(0.1),
+                        ),
+                        color: containerColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          // --- FITUR GANTI TEMA ---
+                          IconItemSwitchRow(
+                            title: "Mode Gelap", // Ganti Judul
+                            icon: "assets/img/light_theme.png",
+                            value: isDarkMode, // Menggunakan variabel state
+                            didChange: (newVal) {
+                              setState(() {
+                                isDarkMode = newVal; // Ubah state saat diklik
+                              });
+                            },
+                          ),
+                          // ------------------------
+
+                          IconItemRow(
+                            title: "Versi Aplikasi",
+                            icon: "assets/img/font.png",
+                            value: "v1.0.0",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
