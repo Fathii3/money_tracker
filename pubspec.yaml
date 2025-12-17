@@ -16,13 +16,14 @@ dependencies:
   
   cupertino_icons: ^1.0.2
   dotted_border: ^2.0.0+3
-  intl: ^0.18.0
+  intl: ^0.18.1
   
   # Local libraries
   calendar_agenda:
     path: dev_lib/calendar_agenda
   card_swiper:
     path: dev_lib/card_swiper
+  fl_chart: ^1.1.1
 
 dev_dependencies:
   flutter_test:

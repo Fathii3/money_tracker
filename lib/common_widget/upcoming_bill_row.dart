@@ -46,7 +46,6 @@ class UpcomingBillRow extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.w500),
                     ),
-
                     Text(
                       "25",
                       style: TextStyle(
@@ -73,7 +72,7 @@ class UpcomingBillRow extends StatelessWidget {
                 width: 8,
               ),
               Text(
-                "\$${sObj["price"]}",
+                "\Rp${sObj["price"]}",
                 style: TextStyle(
                     color: TColor.white,
                     fontSize: 14,

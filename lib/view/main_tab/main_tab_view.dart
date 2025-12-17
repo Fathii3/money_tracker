@@ -4,8 +4,9 @@ import 'package:trackizer/view/add_subscription/add_subscription_view.dart';
 
 import '../../common/color_extension.dart';
 import '../calender/calender_view.dart';
-import '../card/cards_view.dart';
+// import '../card/cards_view.dart'; // No longer needed if we remove the cards view entirely from tabs
 import '../home/home_view.dart';
+import '../settings/settings_view.dart'; // Import Settings View
 import '../spending_budgets/spending_budgets_view.dart';
 
 class MainTabView extends StatefulWidget {
@@ -22,7 +23,6 @@ class _MainTabViewState extends State<MainTabView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
   }
@@ -90,7 +90,7 @@ class _MainTabViewState extends State<MainTabView> {
                               onPressed: () {
                                 setState(() {
                                   selectTab = 2;
-                                  currentTabView = CalenderView();
+                                  currentTabView = const CalenderView();
                                 });
                               },
                               icon: Image.asset(
@@ -102,15 +102,18 @@ class _MainTabViewState extends State<MainTabView> {
                                     : TColor.gray30,
                               ),
                             ),
+                            // Modified Tab 4: Settings
                             IconButton(
                               onPressed: () {
                                 setState(() {
                                   selectTab = 3;
-                                  currentTabView = CardsView();
+                                  currentTabView =
+                                      const SettingsView(); // Navigate to SettingsView
                                 });
                               },
+                              // Changed icon to settings.png
                               icon: Image.asset(
-                                "assets/img/creditcards.png",
+                                "assets/img/settings.png",
                                 width: 20,
                                 height: 20,
                                 color: selectTab == 3
@@ -124,7 +127,11 @@ class _MainTabViewState extends State<MainTabView> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const AddSubScriptionView()) );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AddSubScriptionView()));
                       },
                       child: Container(
                         margin: const EdgeInsets.all(20),

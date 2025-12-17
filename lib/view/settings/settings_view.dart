@@ -24,22 +24,14 @@ class _SettingsViewState extends State<SettingsView> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Image.asset("assets/img/back.png",
-                            width: 25, height: 25, color: TColor.gray30))
-                  ],
-                ),
+                // Tombol Back (IconButton) SUDAH DIHAPUS
+
+                // Judul Halaman
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Settings",
+                      "Pengaturan", // Diubah menjadi "Pengaturan"
                       style: TextStyle(color: TColor.gray30, fontSize: 16),
                     )
                   ],
@@ -105,7 +97,7 @@ class _SettingsViewState extends State<SettingsView> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Text(
-                  "Edit profile",
+                  "Edit profile", // Bisa diubah jadi "Edit Profil" jika mau
                   style: TextStyle(
                       color: TColor.white,
                       fontSize: 12,
@@ -157,7 +149,6 @@ class _SettingsViewState extends State<SettingsView> {
                       ],
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 8),
                     child: Text(
@@ -184,23 +175,19 @@ class _SettingsViewState extends State<SettingsView> {
                           icon: "assets/img/sorting.png",
                           value: "Date",
                         ),
-
                         IconItemRow(
                           title: "Summary",
                           icon: "assets/img/chart.png",
                           value: "Average",
                         ),
-
                         IconItemRow(
                           title: "Default currency",
                           icon: "assets/img/money.png",
                           value: "USD (\$)",
                         ),
-                        
                       ],
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 8),
                     child: Text(
@@ -237,7 +224,6 @@ class _SettingsViewState extends State<SettingsView> {
                           icon: "assets/img/font.png",
                           value: "Inter",
                         ),
-                        
                       ],
                     ),
                   ),

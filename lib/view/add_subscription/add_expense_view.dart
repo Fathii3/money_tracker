@@ -4,26 +4,27 @@ import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/common_widget/primary_button.dart';
 import 'package:trackizer/common_widget/round_textfield.dart';
 
-// Import file Expense
-import 'add_expense_view.dart';
+// PENTING: Import file Subscription agar bisa kembali
+import 'add_subscription_view.dart';
 
-class AddSubScriptionView extends StatefulWidget {
-  const AddSubScriptionView({super.key});
+class AddExpenseView extends StatefulWidget {
+  const AddExpenseView({super.key});
 
   @override
-  State<AddSubScriptionView> createState() => _AddSubScriptionViewState();
+  State<AddExpenseView> createState() => _AddExpenseViewState();
 }
 
-class _AddSubScriptionViewState extends State<AddSubScriptionView> {
+class _AddExpenseViewState extends State<AddExpenseView> {
   TextEditingController txtDescription = TextEditingController();
   TextEditingController txtAmount = TextEditingController();
 
-  List subArr = [
-    {"name": "HBO GO", "icon": "assets/img/hbo_logo.png"},
-    {"name": "Spotify", "icon": "assets/img/spotify_logo.png"},
-    {"name": "YouTube Premium", "icon": "assets/img/youtube_logo.png"},
-    {"name": "Microsoft OneDrive", "icon": "assets/img/onedrive_logo.png"},
-    {"name": "NetFlix", "icon": "assets/img/netflix_logo.png"}
+  // Data Kategori Pengeluaran (Ganti icon sesuai aset kamu)
+  List expenseArr = [
+    {"name": "Food & Drink", "icon": "assets/img/netflix_logo.png"},
+    {"name": "Transportation", "icon": "assets/img/spotify_logo.png"},
+    {"name": "Shopping", "icon": "assets/img/youtube_logo.png"},
+    {"name": "Housing", "icon": "assets/img/onedrive_logo.png"},
+    {"name": "Entertainment", "icon": "assets/img/hbo_logo.png"}
   ];
 
   @override
@@ -73,7 +74,7 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                       ],
                     ),
 
-                    // --- TOMBOL TOGGLE (SUBSCRIPTION AKTIF) ---
+                    // --- TOMBOL TOGGLE (EXPENSE AKTIF) ---
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Container(
@@ -85,36 +86,17 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                         ),
                         child: Row(
                           children: [
-                            // Tombol Langganan (AKTIF)
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: TColor.gray70,
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                      "Langganan", // Terjemahan "Subscription"
-                                      style: TextStyle(
-                                          color: TColor.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600)),
-                                ),
-                              ),
-                            ),
-
-                            // Tombol Pengeluaran (TIDAK AKTIF)
+                            // Tombol Langganan (TIDAK AKTIF - KLIK PINDAH)
                             Expanded(
                               child: InkWell(
                                 onTap: () {
+                                  // Pindah ke Subscription View
                                   Navigator.pushReplacement(
                                     context,
                                     PageRouteBuilder(
                                       pageBuilder:
                                           (context, animation1, animation2) =>
-                                              const AddExpenseView(),
+                                              const AddSubScriptionView(),
                                       transitionDuration: Duration.zero,
                                       reverseTransitionDuration: Duration.zero,
                                     ),
@@ -127,9 +109,28 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
-                                      "Pengeluaran", // Terjemahan "Expense"
+                                      "Langganan", // Terjemahan "Subscription"
                                       style: TextStyle(
                                           color: TColor.gray30,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                              ),
+                            ),
+                            // Tombol Pengeluaran (AKTIF)
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: TColor.gray70, // Warna Aktif
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                      "Pengeluaran", // Terjemahan "Expense"
+                                      style: TextStyle(
+                                          color: TColor.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600)),
                                 ),
@@ -139,10 +140,9 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                         ),
                       ),
                     ),
-                    // ---------------------------------------------
 
                     Text(
-                      "Tambah\nLangganan", // Terjemahan "Add new subscription"
+                      "Tambah\nPengeluaran", // Terjemahan "Add new expense"
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: TColor.white,
@@ -163,10 +163,10 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                           enlargeFactor: 0.4,
                           enlargeStrategy: CenterPageEnlargeStrategy.zoom,
                         ),
-                        itemCount: subArr.length,
+                        itemCount: expenseArr.length,
                         itemBuilder: (BuildContext context, int itemIndex,
                             int pageViewIndex) {
-                          var sObj = subArr[itemIndex] as Map? ?? {};
+                          var sObj = expenseArr[itemIndex] as Map? ?? {};
                           return Container(
                             margin: const EdgeInsets.all(10),
                             child: Column(
@@ -208,7 +208,7 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
               child: Column(
                 children: [
                   Text(
-                    "Harga Bulanan", // Terjemahan "Monthly price"
+                    "Nominal", // Terjemahan "Amount"
                     style: TextStyle(
                         color: TColor.gray40,
                         fontSize: 12,
@@ -253,7 +253,7 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: PrimaryButton(
-                  title: "Tambahkan Platform",
+                  title: "Tambahkan Pengeluaran",
                   onPressed: () {}), // Terjemahan Button
             ),
             const SizedBox(height: 20),
