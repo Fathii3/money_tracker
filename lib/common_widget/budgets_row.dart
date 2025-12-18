@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../common/color_extension.dart';
+import '../common/theme_manager.dart'; // Import Theme Manager
 
 class BudgetsRow extends StatelessWidget {
   final Map bObj;
@@ -10,101 +10,109 @@ class BudgetsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var proVal = (double.tryParse(bObj["left_amount"]) ?? 0) /
-        (double.tryParse(bObj["total_budget"]) ?? 0);
+    // 1. Dengarkan perubahan tema
+    return ValueListenableBuilder<bool>(
+        valueListenable: themeNotifier,
+        builder: (context, isDarkMode, child) {
+          // 2. Tentukan Warna Dinamis
+          // Disini kita pastikan teks jadi hitam jika mode terang
+          var textColor = isDarkMode ? TColor.white : Colors.black;
+          var subTextColor = isDarkMode ? TColor.gray30 : TColor.gray50;
+          var containerColor =
+              isDarkMode ? TColor.gray60.withOpacity(0.2) : TColor.white;
+          var borderColor = isDarkMode
+              ? TColor.border.withOpacity(0.1)
+              : TColor.gray30.withOpacity(0.3);
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onPressed,
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: TColor.border.withOpacity(0.05),
-            ),
-            color: TColor.gray60.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      bObj["icon"],
-                      width: 30,
-                      height: 30,
-                      color: TColor.gray40,
-                    ),
+          var proColor = bObj["color"] as Color? ?? TColor.secondary;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: onPressed,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: borderColor,
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  color: containerColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          bObj["name"],
-                          style: TextStyle(
-                              color: TColor.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Image.asset(
+                            bObj["icon"],
+                            width: 30,
+                            height: 30,
+                            color: TColor.gray40,
+                          ),
                         ),
-                        Text(
-                          "\Rp${bObj["left_amount"]} Uang Tersisa",
-                          style: TextStyle(
-                              color: TColor.gray30,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                bObj["name"],
+                                style: TextStyle(
+                                    color: textColor, // Nama Item (Hitam/Putih)
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                "Sisa Rp${bObj["left_amount"]}",
+                                style: TextStyle(
+                                    color: subTextColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Rp${bObj["total_budget"]}",
+                              style: TextStyle(
+                                  color: textColor, // Total (Hitam/Putih)
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Rp${bObj["spend_amount"]}",
+                              style: TextStyle(
+                                  color: subTextColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "\Rp${bObj["spend_amount"]}",
-                          style: TextStyle(
-                              color: TColor.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "dari \Rp${bObj["total_budget"]}",
-                          style: TextStyle(
-                              color: TColor.gray30,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ]),
-                ],
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: LinearProgressIndicator(
+                        backgroundColor: TColor.gray60,
+                        valueColor: AlwaysStoppedAnimation(proColor),
+                        minHeight: 3,
+                        value: (double.tryParse(bObj["spend_amount"]) ?? 0) /
+                            (double.tryParse(bObj["total_budget"]) ?? 1),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              LinearProgressIndicator(
-                backgroundColor: TColor.gray60,
-                valueColor: AlwaysStoppedAnimation(bObj["color"]),
-                minHeight: 3,
-                value: proVal,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 }
