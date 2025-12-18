@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/color_extension.dart';
 import '../../common/theme_manager.dart';
-import '../../common/notification_helper.dart'; // Import Helper Notifikasi
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -16,10 +15,6 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  // State
-  bool isReminderEnabled = false;
-  String reminderTime = "09:00";
-
   // Jam Realtime
   late String _timeString;
   Timer? _timer;
@@ -28,58 +23,10 @@ class _SettingsViewState extends State<SettingsView> {
   void initState() {
     super.initState();
 
-    // Inisialisasi Notifikasi
-    NotificationHelper.init();
-
     // Jam Realtime
     _timeString = _formatDateTime(DateTime.now());
     _timer =
         Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-
-    // Load Data
-    _loadSettings();
-  }
-
-  Future<void> _loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isReminderEnabled = prefs.getBool('isReminderEnabled') ?? false;
-      reminderTime = prefs.getString('reminderTime') ?? "09:00";
-    });
-  }
-
-  Future<void> _handleSwitchChange(bool value) async {
-    setState(() {
-      isReminderEnabled = value;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isReminderEnabled', value);
-
-    if (value) {
-      List<String> timeParts = reminderTime.split(":");
-      int hour = int.parse(timeParts[0]);
-      int minute = int.parse(timeParts[1]);
-      await NotificationHelper.scheduleDailyNotification(hour, minute);
-    } else {
-      await NotificationHelper.cancelNotification();
-    }
-  }
-
-  Future<void> _handleTimeChange(String newTime) async {
-    setState(() {
-      reminderTime = newTime;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('reminderTime', newTime);
-
-    if (isReminderEnabled) {
-      List<String> timeParts = newTime.split(":");
-      int hour = int.parse(timeParts[0]);
-      int minute = int.parse(timeParts[1]);
-      await NotificationHelper.scheduleDailyNotification(hour, minute);
-    }
   }
 
   @override
@@ -116,14 +63,12 @@ class _SettingsViewState extends State<SettingsView> {
 
         return Scaffold(
           backgroundColor: backgroundColor,
-          // SafeArea ditaruh di luar SingleChildScrollView agar status bar tidak tertutup
           body: SafeArea(
             child: SingleChildScrollView(
-              // Tambahkan physics agar bisa di-scroll memantul
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  // --- HEADER (Tanpa Tombol Back) ---
+                  // --- HEADER ---
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -142,7 +87,6 @@ class _SettingsViewState extends State<SettingsView> {
                           )
                         ],
                       ),
-                      // Tombol Back dihapus di sini
                     ],
                   ),
 
@@ -183,60 +127,9 @@ class _SettingsViewState extends State<SettingsView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 0, bottom: 8),
-                          child: Text(
-                            "Preferensi",
-                            style: TextStyle(
-                                color: textColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: borderColor),
-                            color: containerColor,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Column(
-                            children: [
-                              _customSwitchRow(
-                                  "Pengingat Harian",
-                                  Icon(Icons.notifications_active_outlined,
-                                      color: textColor, size: 20),
-                                  isReminderEnabled, (val) {
-                                _handleSwitchChange(val);
-                              }, textColor),
-                              if (isReminderEnabled)
-                                Column(
-                                  children: [
-                                    Divider(
-                                        color: borderColor,
-                                        indent: 20,
-                                        endIndent: 20),
-                                    InkWell(
-                                      onTap: () {
-                                        _showTimePicker(
-                                            context, isDarkMode, textColor);
-                                      },
-                                      child: _customRowWidget(
-                                          "Waktu Pengingat",
-                                          Icon(Icons.access_time,
-                                              color: textColor, size: 20),
-                                          reminderTime,
-                                          textColor),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ),
-
                         // --- DATA & LAPORAN ---
                         Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 8),
+                          padding: const EdgeInsets.only(top: 0, bottom: 8),
                           child: Text(
                             "Data & Laporan",
                             style: TextStyle(
@@ -312,7 +205,6 @@ class _SettingsViewState extends State<SettingsView> {
                           ),
                         ),
 
-                        // SIZEDBOX UNTUK PADDING BAWAH AGAR BISA SCROLL LEBIH LEGA
                         const SizedBox(height: 50),
                       ],
                     ),
@@ -354,32 +246,6 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  Widget _customRowWidget(
-      String title, Widget iconWidget, String value, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      child: Row(
-        children: [
-          iconWidget,
-          const SizedBox(width: 15),
-          Expanded(
-            child: Text(title,
-                style: TextStyle(
-                    color: color, fontSize: 14, fontWeight: FontWeight.w600)),
-          ),
-          Text(value,
-              style: TextStyle(
-                  color: color.withOpacity(0.7),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500)),
-          const SizedBox(width: 8),
-          Image.asset("assets/img/next.png",
-              width: 12, height: 12, color: color.withOpacity(0.7))
-        ],
-      ),
-    );
-  }
-
   Widget _customSwitchRow(String title, Widget iconWidget, bool value,
       Function(bool) onChanged, Color color) {
     return Padding(
@@ -396,7 +262,7 @@ class _SettingsViewState extends State<SettingsView> {
           CupertinoSwitch(
             value: value,
             onChanged: onChanged,
-            activeColor: TColor.primary,
+            activeTrackColor: TColor.primary,
           )
         ],
       ),
@@ -424,28 +290,5 @@ class _SettingsViewState extends State<SettingsView> {
             ],
           );
         });
-  }
-
-  void _showTimePicker(
-      BuildContext context, bool isDarkMode, Color textColor) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: const TimeOfDay(hour: 9, minute: 0),
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: Theme(
-            data: isDarkMode ? ThemeData.dark() : ThemeData.light(),
-            child: child!,
-          ),
-        );
-      },
-    );
-    if (picked != null) {
-      final localizations = MaterialLocalizations.of(context);
-      final newTime =
-          localizations.formatTimeOfDay(picked, alwaysUse24HourFormat: true);
-      _handleTimeChange(newTime);
-    }
   }
 }

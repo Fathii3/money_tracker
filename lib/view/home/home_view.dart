@@ -7,7 +7,6 @@ import '../../common_widget/custom_arc_painter.dart';
 import '../../common_widget/segment_button.dart';
 import '../../common_widget/status_button.dart';
 import '../../common_widget/subscription_home_row.dart';
-import '../../common_widget/upcoming_bill_row.dart';
 
 // PENTING: Import Theme Manager agar Home bisa berubah warna
 import '../../common/theme_manager.dart';

@@ -309,14 +309,16 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                                                     onPrimary: Colors.white,
                                                     surface: bgColor,
                                                     onSurface: textColor),
-                                                dialogBackgroundColor: bgColor)
+                                                dialogTheme: DialogThemeData(
+                                                    backgroundColor: bgColor))
                                             : ThemeData.light().copyWith(
                                                 colorScheme: ColorScheme.light(
                                                     primary: TColor.primary,
                                                     onPrimary: Colors.white,
                                                     surface: bgColor,
                                                     onSurface: textColor),
-                                                dialogBackgroundColor: bgColor),
+                                                dialogTheme: DialogThemeData(
+                                                    backgroundColor: bgColor)),
                                         child: child!,
                                       );
                                     },

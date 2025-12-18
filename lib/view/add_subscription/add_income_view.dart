@@ -218,7 +218,7 @@ class _AddIncomeViewState extends State<AddIncomeView> {
                                             color: TColor.gray70, // Warna Aktif
                                             borderRadius:
                                                 BorderRadius.circular(25),
-                                            boxShadow: [
+                                            boxShadow: const [
                                               BoxShadow(
                                                   color: Colors.black26,
                                                   blurRadius: 4,
@@ -353,7 +353,8 @@ class _AddIncomeViewState extends State<AddIncomeView> {
                                                   surface: bgColor,
                                                   onSurface: textColor,
                                                 ),
-                                                dialogBackgroundColor: bgColor,
+                                                dialogTheme: DialogThemeData(
+                                                    backgroundColor: bgColor),
                                               )
                                             : ThemeData.light().copyWith(
                                                 colorScheme: ColorScheme.light(
@@ -362,7 +363,8 @@ class _AddIncomeViewState extends State<AddIncomeView> {
                                                   surface: bgColor,
                                                   onSurface: textColor,
                                                 ),
-                                                dialogBackgroundColor: bgColor,
+                                                dialogTheme: DialogThemeData(
+                                                    backgroundColor: bgColor),
                                               ),
                                         child: child!,
                                       );

@@ -93,19 +93,19 @@ class CalendarAgenda extends StatefulWidget implements PreferredSizeWidget {
   CalendarAgendaState createState() => CalendarAgendaState();
 
   @override
-  Size get preferredSize => new Size.fromHeight(250.0);
+  Size get preferredSize => const Size.fromHeight(250.0);
 }
 
 class CalendarAgendaState extends State<CalendarAgenda>
     with TickerProviderStateMixin {
-  ItemScrollController _scrollController = new ItemScrollController();
+  final ItemScrollController _scrollController = ItemScrollController();
 
   late Color backgroundColor;
   late double padding;
   late Widget leading;
   late double _scrollAlignment;
 
-  List<String> _eventDates = [];
+  final List<String> _eventDates = [];
   List<DateTime> _dates = [];
   DateTime? _selectedDate;
   int? _daySelectedIndex;
@@ -137,7 +137,7 @@ class CalendarAgendaState extends State<CalendarAgenda>
       return Container(
         width: MediaQuery.of(context).size.width,
         height: widget.appbar ? 125 : 110,
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         alignment: Alignment.bottomCenter,
         child: ScrollablePositionedList.builder(
             padding: _dates.length < 5
@@ -157,7 +157,7 @@ class CalendarAgendaState extends State<CalendarAgenda>
                 ? false
                 : true,
             itemScrollController: _scrollController,
-            physics: BouncingScrollPhysics(
+            physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
             itemCount: _dates.length,
@@ -191,21 +191,21 @@ class CalendarAgendaState extends State<CalendarAgenda>
                                                   Colors.black.withOpacity(0.2),
                                               spreadRadius: 1,
                                               blurRadius: 10,
-                                              offset: Offset(0, 3),
+                                              offset: const Offset(0, 3),
                                             )
                                           : BoxShadow(
                                               color:
                                                   Colors.grey.withOpacity(0.0),
                                               spreadRadius: 5,
                                               blurRadius: 20,
-                                              offset: Offset(0, 3),
+                                              offset: const Offset(0, 3),
                                             )
                                     ],
                                   ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 10.0,
                             ),
                             Text(
@@ -219,33 +219,33 @@ class CalendarAgendaState extends State<CalendarAgenda>
                                       ? FontWeight.w700
                                       : FontWeight.w700),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             Text(
                               widget.weekDay == WeekDay.long
                                   ? DateFormat.EEEE(Locale(_locale).toString())
                                       .format(date)
                                   : DateFormat.E(Locale(_locale).toString())
                                       .format(date),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12.0,
-                                color: const Color(0xffA2A2B5),
+                                color: Color(0xffA2A2B5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             _eventDates
                                     .contains(date.toString().split(" ").first)
                                 ? isSelected && widget.selectedEventLogo != null
                                     ? widget.selectedEventLogo!
                                     : (!isSelected && widget.eventLogo != null
                                         ? widget.eventLogo!
-                                        : SizedBox(
+                                        : const SizedBox(
                                             height: 5.0,
                                           ))
-                                : SizedBox(
+                                : const SizedBox(
                                     height: 5.0,
                                   ),
-                            Spacer(),
+                            const Spacer(),
                           ],
                         ),
                       ),
@@ -257,7 +257,7 @@ class CalendarAgendaState extends State<CalendarAgenda>
       );
     }
 
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: widget.appbar ? 210 : 115.0,
       child: Stack(
@@ -309,7 +309,7 @@ class CalendarAgendaState extends State<CalendarAgenda>
       context: context,
       isScrollControlled: true,
       backgroundColor: widget.fullCalendarBackgroundColor,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
       ),
@@ -324,22 +324,22 @@ class CalendarAgendaState extends State<CalendarAgenda>
         } else {
           height = (MediaQuery.of(context).size.height - 100.0);
         }
-        return Container(
+        return SizedBox(
           height: widget.fullCalendarScroll == FullCalendarScroll.vertical
               ? height
               : (MediaQuery.of(context).size.height / 7) * 4.3,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: 60,
                 height: 6,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3.0),
-                    color: Color(0xFFE0E0E0)),
+                    color: const Color(0xFFE0E0E0)),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Expanded(
@@ -393,7 +393,7 @@ class CalendarAgendaState extends State<CalendarAgenda>
       alignment: widget.selectedDayPosition == SelectedDayPosition.center
           ? 78 / 200
           : _scrollAlignment,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }

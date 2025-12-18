@@ -892,7 +892,7 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
   late List<double> rotates;
 
   void _updateValues() {
-    var spaceWidth = MediaQuery.sizeOf(context).width * 0.07;
+    final spaceWidth = MediaQuery.sizeOf(context).width * 0.07;
     if (widget.scrollDirection == Axis.horizontal) {
       final space = (_swiperWidth - widget.itemWidth!) / 2 - 25;
       offsets = widget.axisDirection == AxisDirection.left
@@ -940,7 +940,7 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
 
     final offset = widget.scrollDirection == Axis.horizontal
         ? widget.axisDirection == AxisDirection.left
-            ? Offset(f, f/ 2)
+            ? Offset(f, f / 2)
             : Offset(-f, -f / 2)
         : Offset(f / 2, f);
 
@@ -950,15 +950,14 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
             : Alignment.centerRight
         : Alignment.topCenter;
 
-
     return Opacity(
       opacity: o,
-      child:  Transform.rotate(
-        angle:  a / 180.0,
+      child: Transform.rotate(
+        angle: a / 180.0,
         child: Transform.translate(
-        key: ValueKey<int>(_currentIndex + i),
-        offset: offset,
-        child: Transform.scale(
+          key: ValueKey<int>(_currentIndex + i),
+          offset: offset,
+          child: Transform.scale(
             scale: s,
             alignment: alignment,
             child: SizedBox(
